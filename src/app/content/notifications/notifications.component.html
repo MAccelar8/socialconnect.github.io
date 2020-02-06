@@ -1,0 +1,35 @@
+
+
+<div  class="notifications" *ngIf="users.length > 0">
+    <div class="notification-header text-center mb-5">
+    <h2>Friend Requests</h2>
+</div>
+<div class="notification-wrapper" *ngFor="let user of users">
+    <div class="notification" >
+        <div class="notification-profile-pic">
+            <div class="fp-inner-wrapper">
+                <div class="image-container"> 
+                    <img  src={{user.profilePicURL}} alt="">
+                </div>
+            </div>
+        </div>
+        <div class="notification-content">
+            <div class="fc-inner-wrapper">
+                <h3>{{user.displayName}}</h3>
+            </div>
+        </div>
+        <div class="notification-buttons">
+           <div class="fb-wrapper">
+            
+            <button class="btn btn-success mr-3" value={{user.uid}} (click)="acceptRequestButtonClicked($event)">Accept Friend Request</button>
+            <button class="btn btn-danger" value={{user.uid}} (click)="deleteRequestButtonClicked($event)">Delete</button>
+           </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="no-notifications" *ngIf="users.length == 0">
+    <h2>No friend Requests</h2>
+</div>

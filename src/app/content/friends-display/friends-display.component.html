@@ -1,0 +1,33 @@
+<div  class="friends" *ngIf="friends.length > 0">
+    <div class="friend-header text-center mb-5">
+    <h2>Friends</h2>
+</div>
+<div class="friend-wrapper" *ngFor="let friend of friends">
+    <div class="friend" >
+        <div class="friend-profile-pic">
+            <div class="fp-inner-wrapper">
+                <div class="image-container"> 
+                    <img  src={{friend.profilePicURL}} alt="">
+                </div>
+            </div>
+        </div>
+        <div class="friend-content">
+            <div class="fc-inner-wrapper">
+                <h3>{{friend.displayName}}</h3>
+            </div>
+        </div>
+        <div class="friend-buttons">
+           <div class="fb-wrapper">
+            
+            <button class="btn btn-success mr-3" value={{friend.uid}} (click)="acceptRequestButtonClicked($event)">Chat</button>
+            <button class="btn btn-danger"  value={{friend.uid}} (click)="deleteRequestButtonClicked($event)">Unfollow</button>
+           </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="no-" *ngIf="friends.length == 0">
+    <h2>No friends Yet</h2>
+</div>

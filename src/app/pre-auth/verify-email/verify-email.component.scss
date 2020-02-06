@@ -1,0 +1,23 @@
+@import "../../../styles.scss";
+
+
+.auth-block{
+    h3{
+        color: $secondary-color;
+    }
+    button{
+        color: $secondary-color;
+        border: 1px solid $secondary-color;
+    }
+    button:focus{
+        box-shadow: 0 0 0 0.1em $secondary-lightest-color;
+    }
+    
+}
+.redirect{
+    color: $secondary-color;
+    cursor: pointer;
+}
+.redirect:focus{
+    outline: none;
+}

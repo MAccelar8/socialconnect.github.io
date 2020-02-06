@@ -1,0 +1,65 @@
+.friend-wrapper {
+    height: 100px;
+    width: 100%;
+  //   background-color: yellow;
+  background-color: whitesmoke;
+    margin: 10px;
+  
+    .friend {
+      height: 100%;
+      width: 100%;
+      display: flex;
+  
+      .friend-profile-pic {
+        flex: 1;
+        // height: 100%;
+      //   background-color: red;
+  
+        .fp-inner-wrapper {
+            display: flex;
+            margin: auto;
+            width: 80px;
+          height: 100%;
+          .image-container {
+            margin: auto;
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            border-radius: 50%;
+  
+            img {
+              height: 100%;
+              width: 100%;
+            }
+          }
+        }
+      }
+  
+      .friend-content {
+        flex: 3;
+        display: flex;
+      //   background-color: yellowgreen;
+  
+        .fc-inner-wrapper{
+            height: fit-content;
+            width: fit-content;
+            margin: auto;
+        }
+      }
+  
+      .friend-buttons {
+        flex: 3;
+      //   background-color: blue;
+        display: flex;
+  
+        .fb-wrapper{
+            margin: auto;
+        }
+      }
+    }
+  }
+  

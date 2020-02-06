@@ -1,0 +1,26 @@
+<div class="friend-wrapper" *ngFor="let user of users">
+    <div class="friend" >
+        <div class="friend-profile-pic">
+            <div class="fp-inner-wrapper">
+                <div class="image-container">
+                    <img *ngIf="user.profilePicURL != null" src={{user.profilePicURL}} alt="">
+                  
+                    <img *ngIf="user.profilePicURL == null && user.photoURL != null" src={{user.photoURL}} alt="">
+                    <img  *ngIf="user.profilePicURL == null && user.photoURL == null" src="../../../assets/Images/user_default.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="friend-content">
+            <div class="fc-inner-wrapper">
+                <h3>{{user.displayName}}</h3>
+            </div>
+        </div>
+        <div class="friend-buttons">
+           <div class="fb-wrapper">
+            <button *ngIf="!user.isReqSent" class="btn btn-primary" (click)="addFriendButtonClicked($event)" value={{user.uid}}>Add Friend</button>
+            <h4 *ngIf="user.isReqSent">Friend Request Sent</h4>
+            <button *ngIf="user.isReqSent" class="btn btn-primary">Cancel Request?</button>
+           </div>
+        </div>
+    </div>
+</div>

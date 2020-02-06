@@ -1,0 +1,10 @@
+<form name="Chat-form" class="chat-form">
+    <div class="form-group">
+        <input type="text" name="messageInput" class="form-control" [(ngModel)]="message" placeholder="Enter Message here">
+        <button class="btn btn-primary" (click)="sendMessagetoRoom()">Send</button>
+    </div>
+</form>
+
+<section>
+    <div *ngFor="let item of messages"><strong>{{item.user}}</strong> : {{item.message}}</div>
+</section>

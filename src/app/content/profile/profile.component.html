@@ -1,0 +1,125 @@
+<section class="image-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div *ngIf="profilePicUrl == null" class="image-container">
+                    <img src="../../../assets/Images/user_default.png" alt="">
+                </div>
+                <div *ngIf="profilePicUrl != null" class="image-container">
+                    <img src={{profilePicUrl}} alt="">
+                </div>
+                <input class="form-control" mdbFileSelect type="file" (change)="Imageupload($event)" accept=".png,.jpg" name="profileImage" id="profileImage"/>
+                <button type="button" class="btn btn-primary" (click)="uploadButtonClicked($event);" [disabled]="isImageProper ? false : true">Upload Image</button>
+
+
+            </div>
+            <div class="col-md-9">
+                <div class="content">
+                    <h1>{{user.displayName}}</h1>
+                    <p>{{user.email}}</p>
+                </div>
+
+            </div>
+            
+        </div>
+        
+    </div>
+</section>
+<section class="bio">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 style="display: inline-block;">Bio: </h3>
+                <button class="btn btn-primary" style="display: inline-block;margin-left: 30px;" (click)="openModal()" data-toggle="modal" data-target="#bio-modal">Edit</button>
+            </div>
+        </div>
+        <div class="row">
+           <div class="col-md-12">
+               <div class="bio-content-wrapper">
+                   <div class="bio-content-label">City:</div>
+                   <div class="bio-content" *ngIf="userDetails.city != null">{{userDetails.city}}</div>
+                   <div class="bio-content" *ngIf="userDetails.city == null">Add a City</div>
+               </div>
+               <div class="bio-content-wrapper">
+                <div class="bio-content-label">Work Adddress:</div>
+                <div class="bio-content" *ngIf="userDetails.city != null">{{userDetails.address}}</div>
+                <div class="bio-content" *ngIf="userDetails.city == null">Add an Address</div>
+            </div>
+            <div class="bio-content-wrapper">
+                <div class="bio-content-label">Birth Date:</div>
+                <div class="bio-content" *ngIf="userDetails.city != null">{{userDetails.birthdate}}</div>
+                <div class="bio-content" *ngIf="userDetails.city == null">Add birth date</div>
+            </div>
+            <div class="bio-content-wrapper">
+                <div class="bio-content-label">Contact:</div>
+                <div class="bio-content" *ngIf="userDetails.city != null">{{userDetails.contactno}}</div>
+                <div class="bio-content" *ngIf="userDetails.city == null">Add contact number</div>
+            </div>
+            <div class="bio-content-wrapper">
+                <div class="bio-content-label">Gender:</div>
+                <div class="bio-content" *ngIf="userDetails.city != null">{{userDetails.gender}}</div>
+                <div class="bio-content" *ngIf="userDetails.city == null">Add gender</div>
+            </div>
+           </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="modal fade" id="bio-modal" tabindex="-1" role="dialog"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edit Bio</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        
+       
+            <form [formGroup]="bioForm" (ngSubmit)="onbioformSubmitted()">
+                <div class="form-group">
+                    <label for="inputAddress">Work Address:</label>
+                    <input type="text" class="form-control" formControlName="address" placeholder="1234 Main St">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">City:</label>
+                    <input type="text" class="form-control" formControlName="city" placeholder="Mumbai">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Contact:</label>
+                    <input type="text" class="form-control" formControlName="contact" placeholder="1234 5678 90">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Birth Date</label>
+                    <input type="date" class="form-control" formControlName="birthdate">
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                      <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" formControlName="gender" id="radioMale" value="Male" checked>
+                          <label class="form-check-label" for="gridRadios1">
+                            Male
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" formControlName="gender" id="radioFemale" value="Female">
+                          <label class="form-check-label" for="gridRadios2">
+                            Female
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+               
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+    
+            </form>
+       
+    </div>
+  </div>
+</div>

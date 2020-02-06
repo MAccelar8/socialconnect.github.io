@@ -1,0 +1,102 @@
+@import "../../../styles.scss";
+
+.sidebar {
+  visibility: visible;
+  display: block;
+  height: 100vh;
+  width: 350px;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: -350px;
+  transition: 0.5s all ease;
+
+  .sidebar-list {
+    background-color: $primary-color;
+    height: 100vh;
+    overflow-y: auto;
+  
+    ul {
+      padding: 100px 0 0 0;
+    }
+    
+    li {
+      list-style-type: none;
+      color: white;
+  
+      font-size: 1.5em;
+      padding: 10px 0 10px 30px;
+    }
+  
+    .router-link-active {
+      background-color: $primary-dark-color;
+    }
+  
+    i {
+      color: white;
+      font-size: 35px;
+      padding: 15px;
+      float: right;
+    }
+  
+    i:hover {
+      color: $primary-lightest-color;
+    }
+  }
+  
+}
+
+
+header{
+    background-color: $primary-color;
+    display: flex;
+    span{
+        i{
+            margin: auto;
+        }
+    }
+
+    li{
+        margin: 0 10px;
+    }
+    .navbar-brand{
+        height: 3.5em;
+        width: 16em;
+        display: inline-block;
+    }
+
+    .sidebar-button {
+        margin-left: 2em;
+        font-size: 2em;
+        color: white;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .log-out{
+        background-color: $secondary-color;
+        border: none;
+    }
+
+
+}
+
+.body-wrapper::before {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  content: "";
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  z-index: 70;
+}
+.body-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+.sidebar-button:hover {
+  color: black;
+}

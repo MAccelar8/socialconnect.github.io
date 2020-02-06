@@ -1,0 +1,61 @@
+<div id="body-wrap">
+   
+
+
+
+<header>
+    <span  class="sidebar-button" (click)="sidebar_open()"><i class="fa fa-bars"></i></span>
+    <div class="container">
+        
+
+      <nav class="navigationbar navbar navbar-expand-lg navbar-dark archivo">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <img src="../../../assets/Images/logo.png" alt="Social Connect Logo" class="navbar-brand">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li id="friend-requests" class="nav-item">
+              <a class="nav-link" routerLink="notifications"> <i class="fa fa-users"></i> <span *ngIf="notCount > 0" class="badge">{{notCount}}</span></a>
+            </li>
+            <li id="work" class="nav-item">
+              <a class="nav-link" routerLink="/content/profile">Hello, {{username}}</a>
+            </li>
+            <li id="contact" class="nav-item">
+                <button type="submit" class="btn btn-primary log-out" (click)="authservice.SignOut()">LogOut</button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+
+</div>
+ 
+<div class="sidebar cairo">
+    <div class="sidebar-list">
+        <span class="sidebar-close-button" (click)="sidebar_close()"><i class="fa fa-close"></i></span>
+      <ul>
+        <li [routerLink]="['chat']" routerLinkActive="router-link-active" class="side-selected">Chat</li>
+        <li [routerLink]="['friends']" routerLinkActive="router-link-active" class="side-selected">Friends</li>
+        <li [routerLink]="['people']" routerLinkActive="router-link-active" >Search Peaople </li>
+        <li [routerLink]="['profile']" routerLinkActive="router-link-active" >Profile</li>
+        <li [routerLink]="['notifications']" routerLinkActive="router-link-active" >Notifications</li>
+      </ul>
+    </div>  
+  </div>
+
+  <div class="container">
+    <!-- <app-chat></app-chat> -->
+    <!-- <app-friends></app-friends> -->
+    <router-outlet></router-outlet>
+  </div>
