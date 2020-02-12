@@ -1,0 +1,97 @@
+<!-- <div *ngIf="currentUser">
+    <p>{{currentUser.displayName}}</p>
+</div>
+
+
+<section>
+    <div *ngFor="let item of messages">
+        <strong>{{item.username}}</strong> : {{item.message}}
+        <div style="float: right;">{{item.time | date:'shortTime'}}</div>
+    </div>
+    
+</section>
+<section class="form-section">
+    <form name="Chat-form" class="chat-form">
+        <div class="form-group">
+            <input type="text" name="messageInput" class="form-control" [(ngModel)]="message" placeholder="Enter Message here">
+            <button class="btn btn-primary" (click)="sendMessagetoRoom()">Send</button>
+        </div>
+    </form>
+</section> -->
+
+<div class="row heading" *ngIf="currentUser">
+  <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+    <div class="heading-avatar-icon">
+      <img *ngIf="currentUser.profilePicURL" src={{currentUser.profilePicURL}} />
+      <img *ngIf="!currentUser.profilePicURL" src={{currentUser.photoURL}} />
+      
+      
+    </div>
+  </div>
+  <div class="col-sm-8 col-xs-7 heading-name">
+    <a class="heading-name-meta">{{currentUser.displayName}} </a>
+    <span class="heading-online">Online</span>
+  </div>
+  <div class="col-sm-1 col-xs-1  heading-dot float-right">
+    <i class="fa fa-ellipsis-v fa-2x  float-right" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div class="row message" id="conversation" style="width: 100%;">
+  <!-- <div class="row message-previous">
+          <div class="col-sm-12 previous">
+            <a onclick="previous(this)" id="ankitjain28" name="20">
+            Show Previous Message!
+            </a>
+          </div>
+        </div> -->
+
+  <section #chatSpace style="width: 100%;" id="chatarea">
+    <div class="chat-message-wrapper" *ngFor="let item of messages">
+        <div [className]="item.displayName == user.displayName ? 'chat-sender wrapper chat-message-text' : 'chat-reciever wrapper chat-message-text'" >
+          <div class="message-text-br">
+            {{item.message}}
+          </div>
+          <div class="time-font">{{item.time | date:'shortTime'}}</div>
+        </div>
+        
+      </div>
+    <!-- <div class="chat-message-wrapper">
+      <div class="wrapper chat-sender chat-message-text">
+        Hey There
+        <div class="time-font">6:33 PM</div>
+      </div>
+    </div>
+    <div class="chat-message-wrapper">
+      <div class="wrapper chat-reciever chat-message-text">
+        Hey There
+        <div class="time-font">6:33 PM</div>
+      </div>
+    </div> -->
+  </section>
+</div>
+
+<div class="row reply">
+  <div class="col-sm-1 col-xs-1 reply-emojis">
+    <i class="fa fa-smile-o fa-2x"></i>
+  </div>
+  <div class="col-sm-9 col-xs-9 reply-main">
+    <textarea
+      class="form-control"
+      rows="1"
+      id="comment"
+      [(ngModel)]="message"
+      (keyup.enter)="sendMessagetoRoom()"
+    ></textarea>
+  </div>
+  <div class="col-sm-1 col-xs-1 reply-recording">
+    <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+  </div>
+  <div class="col-sm-1 col-xs-1 reply-send">
+    <i
+      class="fa fa-send fa-2x"
+      aria-hidden="true"
+      (click)="sendMessagetoRoom()"
+    ></i>
+  </div>
+</div>

@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FriendsComponent } from './friends/friends.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { FriendsDisplayComponent } from './friends-display/friends-display.component';
+import { FriendsChatListComponent } from './chat/friends-chat-list/friends-chat-list.component';
+import { ChatAreaComponent } from './chat/chat-area/chat-area.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { FriendsDisplayComponent } from './friends-display/friends-display.compo
     ChatComponent,
     FriendsComponent,
     NotificationsComponent,
-    FriendsDisplayComponent
+    FriendsDisplayComponent,
+    FriendsChatListComponent,
+    ChatAreaComponent
   ],
   imports: [
     CommonModule,

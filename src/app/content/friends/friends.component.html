@@ -16,10 +16,13 @@
             </div>
         </div>
         <div class="friend-buttons">
-           <div class="fb-wrapper">
+           <div class="fb-wrapper" *ngIf="!user.isFriend">
             <button *ngIf="!user.isReqSent" class="btn btn-primary" (click)="addFriendButtonClicked($event)" value={{user.uid}}>Add Friend</button>
             <h4 *ngIf="user.isReqSent">Friend Request Sent</h4>
             <button *ngIf="user.isReqSent" class="btn btn-primary">Cancel Request?</button>
+           </div>
+           <div class="fb-wrapper" *ngIf="user.isFriend">
+                <h4>You are Friends</h4>
            </div>
         </div>
     </div>

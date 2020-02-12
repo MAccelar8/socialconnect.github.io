@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  baseURL: 'http://localhost:3000/api/',
   firebase: {
     apiKey: "AIzaSyDMW-J0DWvexpv5WSLJUK5fN9UoX6rDFFg",
     authDomain: "social-connect-5e34a.firebaseapp.com",
@@ -16,6 +17,17 @@ export const environment = {
   }
 };
 
+export const apiEndpoints = {
+  SetPhotoURL : 'setphotourl',
+  GetAllUsersWithFriendReq : 'getuserswithfriendrequest',
+  GetAllFriends : 'getAllfriends',
+  UserDetail : 'userdetail',
+  GetUserInfoById : 'getuserbyid',
+  GetAllUser : 'getallusers',
+  GetNumberOfUserRequest : 'getnumberofuserrequest',
+  DeleteFriend : 'deletefriends'
+
+}
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -13,9 +13,9 @@ import { ContentModule } from "./content/content.module";
 import { NotAuthorizedComponent } from "./not-authorized/not-authorized.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { AppInterceptorService } from './app-interceptor.service';
-import { ChatService } from './chat.service';
+import { ChatService } from './services/chat.service';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({

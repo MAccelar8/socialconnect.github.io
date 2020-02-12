@@ -7,7 +7,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
-import { UserService } from "src/app/user.service";
+import { UserService } from "src/app/services/user.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Injectable({

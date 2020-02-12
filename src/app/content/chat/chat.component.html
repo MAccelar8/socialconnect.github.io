@@ -1,10 +1,33 @@
-<form name="Chat-form" class="chat-form">
-    <div class="form-group">
-        <input type="text" name="messageInput" class="form-control" [(ngModel)]="message" placeholder="Enter Message here">
-        <button class="btn btn-primary" (click)="sendMessagetoRoom()">Send</button>
-    </div>
-</form>
+<!-- <div class="chat-wrapper">
+    
+<div class="left-friend-list">
+    <app-friends-chat-list></app-friends-chat-list>
+</div>
+<div class="right-chat-area">
+    <app-chat-area></app-chat-area> -->
 
-<section>
-    <div *ngFor="let item of messages"><strong>{{item.user}}</strong> : {{item.message}}</div>
-</section>
+<!-- <form name="Chat-form" class="chat-form">
+        <div class="form-group">
+            <input type="text" name="messageInput" class="form-control" [(ngModel)]="message" placeholder="Enter Message here">
+            <button class="btn btn-primary" (click)="sendMessagetoRoom()">Send</button>
+        </div>
+    </form>
+    
+    <section>
+        <div *ngFor="let item of messages"><strong>{{item.user}}</strong> : {{item.message}}</div>
+    </section> -->
+
+<!-- </div>
+</div> -->
+
+<div class="app">
+  <div class="row app-one">
+    <div class="col-sm-4 side">
+        <app-friends-chat-list></app-friends-chat-list>
+    </div>
+
+    <div class="col-sm-8 conversation">
+        <app-chat-area></app-chat-area>
+    </div>
+  </div>
+</div>

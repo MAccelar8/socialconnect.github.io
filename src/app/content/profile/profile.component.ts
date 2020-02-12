@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "src/app/user.service";
+import { UserService } from "src/app/services/user.service";
 import { FormGroup, FormControl } from "@angular/forms";
 declare var $: any;
 
