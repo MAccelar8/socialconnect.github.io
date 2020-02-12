@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ContentRoutingModule } from './content-routing.module';
@@ -11,7 +11,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { FriendsDisplayComponent } from './friends-display/friends-display.component';
 import { FriendsChatListComponent } from './chat/friends-chat-list/friends-chat-list.component';
 import { ChatAreaComponent } from './chat/chat-area/chat-area.component';
-
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
   declarations: [
@@ -22,13 +22,16 @@ import { ChatAreaComponent } from './chat/chat-area/chat-area.component';
     NotificationsComponent,
     FriendsDisplayComponent,
     FriendsChatListComponent,
-    ChatAreaComponent
+    ChatAreaComponent,
+    
   ],
   imports: [
     CommonModule,
     ContentRoutingModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    PickerModule,
+  ],
+  schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ContentModule { }

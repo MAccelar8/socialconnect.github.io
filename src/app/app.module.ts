@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -17,6 +17,7 @@ import { UserService } from './services/user.service';
 import { AppInterceptorService } from './app-interceptor.service';
 import { ChatService } from './services/chat.service';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
   declarations: [AppComponent, NotAuthorizedComponent],
@@ -31,7 +32,9 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     ContentModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PickerModule
+    
   ],
   providers: [AuthService,UserService,ChatService ,
     {
@@ -40,6 +43,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
       multi:  true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

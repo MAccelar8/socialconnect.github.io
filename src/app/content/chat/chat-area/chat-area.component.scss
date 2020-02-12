@@ -3,6 +3,11 @@
 //         display: flex;
 //     }
 // }
+
+.emoji-marti{
+  position: absolute;
+  bottom:70px;
+}
 .chat-message-wrapper{
     height: fit-content;
     margin: 3px 0px;
@@ -389,6 +394,7 @@
 /*Reply*/
 
 .reply {
+  position: relative;
   height: 70px;
   width: 100%;
   background-color: #f5f1ee;

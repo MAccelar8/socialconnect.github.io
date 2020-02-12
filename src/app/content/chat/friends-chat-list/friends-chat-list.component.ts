@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji'
 
 @Component({
   selector: 'app-friends-chat-list',

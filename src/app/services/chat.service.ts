@@ -94,8 +94,8 @@ public obs$ = this.obs.asObservable();
     var that = this;
     let messObservable = new Observable<any>(observer => {
       this.socket.on("message-recieve", message => {
-        console.log("message observed");
-        console.log(message)
+        // console.log("message observed");
+        // console.log(message)
         observer.next(message);
       });
       return () => {

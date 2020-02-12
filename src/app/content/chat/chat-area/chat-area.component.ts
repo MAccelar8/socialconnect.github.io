@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
 
 @Component({
@@ -7,93 +7,80 @@ import { ChatService } from "src/app/services/chat.service";
   styleUrls: ["./chat-area.component.scss"]
 })
 export class ChatAreaComponent implements OnInit {
-  @ViewChild('chatSpace',{static: true }) myScrollContainer: any;
-  user:any;
-  currentUser: any;
-  message: string;
-  messages = [];
+  @ViewChild("chatSpace", { static: true }) myScrollContainer: any;
+  user: any; // currently logged in user
+  currentUser: any; //chat area of this user
+  message: string; //used for retrieving message from text-area
+  messages = []; // used to store messages from DB and display
+  showEmojiPicker = false; //for Toggling of EmojiPicker
   constructor(private chatservice: ChatService) {
-
-
-
     /**
      * listens to change in selected user in friends-chat-list component
      * sets current user to that user
      */
     this.chatservice.obs$.subscribe((data: any) => {
-      console.log("Inside chat-area");
-      console.log(data);
+      // console.log("Inside chat-area");
+      // console.log(data);
+
+      //Setting the clicked user data to currentUser
       this.currentUser = data;
+
+      /**
+       * Joining the same room as clicked friend does
+       */
       this.chatservice.createRoom(data.personalRoomID);
+
+      /**
+       * getting all messages from the database whenever there is change in the currentUser
+       */
       this.chatservice
         .getAllMessagesfromCurrentRoom(data.personalRoomID)
         .subscribe((data: any) => {
-          console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
-          console.log(data);
-          // var tempData = {
-          //   username : data.message.displayName,
-          //   message: data.message.message,
-          //   time: data.message.time,
-          // }
-
-          // console.log(tempData)
-          // this.messages = data;
+          // console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
+          // console.log(data);
           this.messages = data.message;
         });
     });
 
     this.chatservice.recieveMessagefromRoom().subscribe((data: any) => {
-      console.log("RECIEVEMESSAGEFROMROOM :");
-      console.log(data);
+      // console.log("RECIEVEMESSAGEFROMROOM :");
+      // console.log(data);
 
+      //updating messages array
       this.messages.push(data);
     });
   }
-  ngAfterViewInit() {        
-    this.scrollToBottom();        
-} 
-ngAfterViewChecked() {        
-  this.scrollToBottom();        
-} 
-scrollToBottom(): void {
-    try {
-      // console.log("LDHFJLAHDFLKADKLASJDLKASJFKLAJSFLJ");
-      // console.log("Before " , this.myScrollContainer.nativeElement);
-        // this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        // this.myScrollContainer.nativeElement.offsetTop('500');
-        let z = document.getElementById('chatarea');
-        console.log(z);
-        console.log("scroll height" +z.scrollHeight);
-        let zz = document.getElementById('conversation');
-        zz.scrollTop = z.scrollHeight;
-        // console.log("After " , this.myScrollContainer.nativeElement.scrollTop);
-    } catch(err) { 
-      console.log(err)
-    }                 
-}
+
+  //scrolling down when component is initialized and after DOM is rendered
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
+  // Scrolling down when new message is sent or recieved
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
   ngOnInit() {
-    // this.scrollToBottom();
     this.message = "";
     this.user = JSON.parse(localStorage.getItem("user"));
   }
-  // ngAfterViewInit() {
-  //   this.container = document.getElementById("chat-space");
-  //   console.log("inside chat space");
-  //   console.log(this.container.scrollHeight);
-  //   this.container.scrollTop = this.container.scrollHeight;
-  // }
 
   sendMessagetoRoom() {
-    // let d:Date = Date()
-    // // console.log(d.toJS)
-    // var time = d.getHours()+":"+d.getMinutes()+":"+
-    // d.getSeconds()
-    console.log("The Message was: ", this.message);
+    // console.log("The Message was: ", this.message);
 
+
+    //checking if text-area contains atleast some character other than whitespaces
     var regex = /./;
     if (regex.test(this.message)) {
+
+      // Removing the last /n used to submit from the message
       var messagewithoutlastenter = this.message.replace(/\n$/, "");
       if (messagewithoutlastenter != "") {
+
+        /**
+         * sending message to chatservice to back-end with current date
+         */
         this.chatservice.sendMessage(
           messagewithoutlastenter,
           this.currentUser.personalRoomID,
@@ -104,11 +91,27 @@ scrollToBottom(): void {
       }
     }
 
-    // this.messages.push({
-    //   username: this.user.displayName,
-    //   message: this.message
-    // })
-
+    //clearing the text-area after message submit
     this.message = "";
+  }
+
+
+  //Logic to scroll to bottom
+  scrollToBottom(): void {
+    try {
+      let z = document.getElementById("chatarea");
+      let zz = document.getElementById("conversation");
+      zz.scrollTop = z.scrollHeight;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  /**
+   * toggle Emoji picker
+   */
+  toggleEmojiPicker(){
+    console.log("Toggle selected");
+    this.showEmojiPicker = !this.showEmojiPicker;
   }
 }
