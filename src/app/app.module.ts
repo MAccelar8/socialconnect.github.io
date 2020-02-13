@@ -18,9 +18,12 @@ import { AppInterceptorService } from './app-interceptor.service';
 import { ChatService } from './services/chat.service';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { ReplaceEmojisPipe } from './pipes/replace-emojis.pipe';
+import { LoaderComponent } from './loader/loader.component';
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
-  declarations: [AppComponent, NotAuthorizedComponent],
+  declarations: [AppComponent, NotAuthorizedComponent, LoaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -34,9 +37,8 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     ReactiveFormsModule,
     HttpClientModule,
     PickerModule
-    
   ],
-  providers: [AuthService,UserService,ChatService ,
+  providers: [AuthService,UserService,ChatService ,LoaderService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptorService,
@@ -44,6 +46,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     }
   ],
   bootstrap: [AppComponent],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  schemas : [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [LoaderComponent]
 })
 export class AppModule {}

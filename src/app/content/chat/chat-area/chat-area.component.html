@@ -50,7 +50,8 @@
     <div class="chat-message-wrapper" *ngFor="let item of messages">
         <div [className]="item.displayName == user.displayName ? 'chat-sender wrapper chat-message-text' : 'chat-reciever wrapper chat-message-text'" >
           <div class="message-text-br">
-            {{item.message}}
+            <!-- {{item.message}} -->
+            <div [innerHTML]="item.message | replaceEmojis:'emojione'" style="display: flex;"></div>
           </div>
           <div class="time-font">{{item.time | date:'shortTime'}}</div>
         </div>
@@ -74,7 +75,7 @@
   </section>
 </div>
 <div class="row reply">
-  <emoji-mart class="emoji-marti" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick your emoji…"></emoji-mart>
+  <emoji-mart class="emoji-marti" set="emojione" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick your emoji…"></emoji-mart>
   <div class="col-sm-1 col-xs-1 reply-emojis" (click)="toggleEmojiPicker()">
     <i class="fa fa-smile-o fa-2x"></i>
   </div>
@@ -97,4 +98,5 @@
       (click)="sendMessagetoRoom()"
     ></i>
   </div>
+  <button class="btn btn-primary" (click)="buttonshow()" >Show</button>
 </div>

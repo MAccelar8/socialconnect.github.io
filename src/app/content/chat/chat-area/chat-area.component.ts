@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: "app-chat-area",
@@ -13,7 +14,7 @@ export class ChatAreaComponent implements OnInit {
   message: string; //used for retrieving message from text-area
   messages = []; // used to store messages from DB and display
   showEmojiPicker = false; //for Toggling of EmojiPicker
-  constructor(private chatservice: ChatService) {
+  constructor(private chatservice: ChatService , private loader : LoaderService) {
     /**
      * listens to change in selected user in friends-chat-list component
      * sets current user to that user
@@ -113,5 +114,21 @@ export class ChatAreaComponent implements OnInit {
   toggleEmojiPicker(){
     console.log("Toggle selected");
     this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event) {
+    console.log(event)
+    const { message } = this;
+    console.log(message)
+    const text = `${message}${event.emoji.native}`;
+
+    this.message = text;
+    console.log(message)
+    this.showEmojiPicker = false;
+  }
+
+
+  buttonshow(){
+    console.log("clicked")
   }
 }

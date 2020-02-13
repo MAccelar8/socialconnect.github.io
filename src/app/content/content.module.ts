@@ -12,6 +12,7 @@ import { FriendsDisplayComponent } from './friends-display/friends-display.compo
 import { FriendsChatListComponent } from './chat/friends-chat-list/friends-chat-list.component';
 import { ChatAreaComponent } from './chat/chat-area/chat-area.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { ReplaceEmojisPipe } from '../pipes/replace-emojis.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     FriendsDisplayComponent,
     FriendsChatListComponent,
     ChatAreaComponent,
-    
+    ReplaceEmojisPipe
   ],
   imports: [
     CommonModule,
