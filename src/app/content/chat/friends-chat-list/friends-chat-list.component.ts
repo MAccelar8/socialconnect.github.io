@@ -61,7 +61,7 @@ onFriendClick(data){
   console.log(data)
   this.currentSelectedFriend = data;
   console.log("Friend is clicked")
-  this.chatService.changeChatPerson(data)
+  this.chatService.changeChatPerson(data);
 }
 
 }

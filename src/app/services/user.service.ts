@@ -88,4 +88,9 @@ export class UserService {
   getAllUsers(){
     return this.http.get(this.baseURL + apiEndpoints.GetAllUser)
   }
+
+  checkUserOnlineStatus(userInfo){
+    console.log("INSIDE CHECK USER ONLINE STATUS ")
+    return this.http.post(this.baseURL + apiEndpoints.CheckUserOnlineStatus , {uid : userInfo})
+  }
 }

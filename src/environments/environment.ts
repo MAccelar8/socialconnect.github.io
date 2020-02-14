@@ -18,6 +18,7 @@ export const environment = {
 };
 
 export const apiEndpoints = {
+  CheckUserOnlineStatus : 'getuseronlinestatus',
   SetPhotoURL : 'setphotourl',
   GetAllUsersWithFriendReq : 'getuserswithfriendrequest',
   GetAllFriends : 'getAllfriends',

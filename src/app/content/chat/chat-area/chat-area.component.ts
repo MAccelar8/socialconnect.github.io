@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
 import { LoaderService } from 'src/app/services/loader.service';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -15,14 +16,15 @@ export class ChatAreaComponent implements OnInit {
   message: string; //used for retrieving message from text-area
   messages = []; // used to store messages from DB and display
   showEmojiPicker = false; //for Toggling of EmojiPicker
-  constructor(private chatservice: ChatService , private loader : LoaderService) {
+  onlineStatus : 0; //checks online status of the currentUser
+  constructor(private chatservice: ChatService , private loader : LoaderService , private userservice : UserService) {
     /**
      * listens to change in selected user in friends-chat-list component
      * sets current user to that user
      */
     this.chatservice.obs$.subscribe((data: any) => {
-      // console.log("Inside chat-area");
-      // console.log(data);
+      console.log("Inside chat-area");
+      console.log(data);
 
       //Setting the clicked user data to currentUser
       this.currentUser = data;
@@ -30,6 +32,12 @@ export class ChatAreaComponent implements OnInit {
        * Joining the same room as clicked friend does
        */
       this.chatservice.createRoom(data.personalRoomID);
+
+
+      this.userservice.checkUserOnlineStatus(data.uid).subscribe((data:any)=>{
+        this.onlineStatus = data.status;
+        console.log(data)
+      })
 
       /**
        * getting all messages from the database whenever there is change in the currentUser

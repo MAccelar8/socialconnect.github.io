@@ -30,9 +30,11 @@
   </div>
   <div class="col-sm-8 col-xs-7 heading-name">
     <a class="heading-name-meta">{{currentUser.displayName}} </a>
-    <span class="heading-online">Online</span>
+    <span *ngIf="onlineStatus" class="heading-online">Online</span>
+    <span *ngIf="!onlineStatus" class="heading-offline">Offline</span>
   </div>
   <div class="col-sm-1 col-xs-1  heading-dot float-right">
+  
     <i class="fa fa-ellipsis-v fa-2x  float-right" aria-hidden="true"></i>
   </div>
 </div>
