@@ -38,7 +38,7 @@ import { LoaderService } from './services/loader.service';
     HttpClientModule,
     PickerModule
   ],
-  providers: [AuthService,UserService,ChatService ,LoaderService,
+  providers: [AuthService,UserService,ChatService ,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptorService,

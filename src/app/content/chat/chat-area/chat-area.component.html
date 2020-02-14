@@ -48,10 +48,10 @@
 
   <section #chatSpace style="width: 100%;" id="chatarea">
     <div class="chat-message-wrapper" *ngFor="let item of messages">
-        <div [className]="item.displayName == user.displayName ? 'chat-sender wrapper chat-message-text' : 'chat-reciever wrapper chat-message-text'" >
+        <div [className]="item.displayName == user.displayName ? 'chat-sender wrapper .wrap-for-max chat-message-text' : 'chat-reciever wrapper .wrap-for-max chat-message-text'" >
           <div class="message-text-br">
             <!-- {{item.message}} -->
-            <div [innerHTML]="item.message | replaceEmojis:'emojione'" style="display: flex;"></div>
+            <div class="inner-message-wrap" [innerHTML]="item.message | replaceEmojis:'emojione'"></div>
           </div>
           <div class="time-font">{{item.time | date:'shortTime'}}</div>
         </div>
@@ -98,5 +98,4 @@
       (click)="sendMessagetoRoom()"
     ></i>
   </div>
-  <button class="btn btn-primary" (click)="buttonshow()" >Show</button>
 </div>

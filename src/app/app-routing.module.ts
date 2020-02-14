@@ -5,9 +5,9 @@ import { NotAuthorizedComponent } from "./not-authorized/not-authorized.componen
 import { ProfileComponent } from './content/profile/profile.component';
 
 const routes: Routes = [
-  { path: "", loadChildren: "./pre-auth/pre-auth.module#PreAuthModule" },
+  { path: "", loadChildren: () => import('./pre-auth/pre-auth.module').then(m => m.PreAuthModule) },
   // {path: 'preauth', loadChildren: './pre-auth/pre-auth.module#PreAuthModule'},
-  { path: "content", loadChildren: "./content/content.module#ContentModule" },
+  { path: "content", loadChildren: () => import('./content/content.module').then(m => m.ContentModule) },
   { path: "not-authorized", component: NotAuthorizedComponent },
   { path: 'profile', component: ProfileComponent, },
   {

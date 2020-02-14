@@ -9,6 +9,7 @@
             type="text"
             class="form-control"
             placeholder="Username"
+            formControlName="username"
             #userName
           />
          
@@ -75,7 +76,7 @@
             type="submit"
             class="btn btn-primary sign-in"
             value="Sign Up"
-            (click)="authService.SignUp(userEmail.value, userPwd.value , userName.value)"
+            (click)="SignUp()"
           >
             Sign Up
           </button>

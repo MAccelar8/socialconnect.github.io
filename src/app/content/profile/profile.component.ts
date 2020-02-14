@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "src/app/services/user.service";
 import { FormGroup, FormControl } from "@angular/forms";
+import { LoaderService } from 'src/app/services/loader.service';
 declare var $: any;
 
 @Component({
@@ -10,13 +11,15 @@ declare var $: any;
 })
 export class ProfileComponent implements OnInit {
   imgfile: File;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService , private loader : LoaderService) {}
   isImageProper: boolean;
   user: any;
   userDetails: any;
   bioForm: FormGroup;
   profilePicUrl: String;
   ngOnInit() {
+
+    this.loader.show('Profile');
     console.log("localstorage");
     // localStorage.removeItem('profileurl')
     console.log(localStorage.getItem("profileurl"));
@@ -44,6 +47,8 @@ export class ProfileComponent implements OnInit {
           this.profilePicUrl = this.userDetails.profilePicURL;
         }
       }
+
+
     });
     this.bioForm = new FormGroup({
       address: new FormControl(),
@@ -52,6 +57,8 @@ export class ProfileComponent implements OnInit {
       contact: new FormControl(),
       gender: new FormControl()
     });
+
+    this.loader.hide()
   }
 
   openModal() {
@@ -59,6 +66,7 @@ export class ProfileComponent implements OnInit {
   }
 
   uploadButtonClicked(event) {
+    this.loader.show('upload')
     console.log(this.user);
     this.userService.uploadimage(this.imgfile, this.user.uid).then(data => {
       console.log("url is");
@@ -71,6 +79,8 @@ export class ProfileComponent implements OnInit {
             "setPhotourl subscribed with URL: " + res.message.profilePicURL
           );
           this.profilePicUrl = res.message.profilePicURL;
+
+          this.loader.hide()
           // localStorage.removeItem("profileurl");
         });
       });
@@ -91,6 +101,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onbioformSubmitted() {
+    this.loader.show('profile change')
     console.log(this.bioForm.value);
     this.userService
       .setUserDetails(this.bioForm.value)
@@ -103,8 +114,13 @@ export class ProfileComponent implements OnInit {
             if (res.status) {
               // console.log(JSON.parse(localStorage.getItem("user")))
               this.userDetails = res.message;
+              this.loader.hide()
+            }else{
+              this.loader.hide()
             }
           });
+        }else{
+          this.loader.hide()
         }
       });
 

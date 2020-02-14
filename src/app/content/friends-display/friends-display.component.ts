@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ChatService } from 'src/app/services/chat.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-friends-display',
@@ -9,10 +10,12 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class FriendsDisplayComponent implements OnInit {
   friends = []
-  constructor(private userServeice : UserService , private chatService : ChatService) { }
+  constructor(private userServeice : UserService , private chatService : ChatService , private loader : LoaderService) { }
 
   ngOnInit() {
 
+
+    this.loader.show('friends-display')
     /**
      * gets list of Users which are friends and Their other details
      */
@@ -23,6 +26,7 @@ export class FriendsDisplayComponent implements OnInit {
         console.log("No friends Found")
         this.friends = [];
       }
+      this.loader.hide()
     })
 
     this.chatService.recieveDeleteFriendAcknowledgement().subscribe(data=>{
@@ -91,6 +95,10 @@ export class FriendsDisplayComponent implements OnInit {
         })
       }
     })
+  }
+
+  chatButtonClicked(event){
+
   }
 
 }

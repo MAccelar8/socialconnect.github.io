@@ -13,6 +13,8 @@ import { FriendsChatListComponent } from './chat/friends-chat-list/friends-chat-
 import { ChatAreaComponent } from './chat/chat-area/chat-area.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ReplaceEmojisPipe } from '../pipes/replace-emojis.pipe';
+import { LoaderComponent } from '../loader/loader.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { ReplaceEmojisPipe } from '../pipes/replace-emojis.pipe';
     FormsModule,
     ReactiveFormsModule,
     PickerModule,
+    OverlayModule
   ],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  schemas : [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [LoaderComponent]
 })
 export class ContentModule { }

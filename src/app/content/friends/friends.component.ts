@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "src/app/services/user.service";
 import { ChatService } from "src/app/services/chat.service";
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: "app-friends",
@@ -12,7 +13,8 @@ export class FriendsComponent implements OnInit {
   currentUser: any;
   constructor(
     private userService: UserService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private loader : LoaderService,
   ) {
 
     /**
@@ -63,6 +65,8 @@ export class FriendsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.loader.show('Get all Friends')
     /**
      * Getting all users from API for First Time
      */
@@ -70,6 +74,8 @@ export class FriendsComponent implements OnInit {
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data.message;
       console.log(this.users);
+
+      this.loader.hide();
     });
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
 import { LoaderService } from 'src/app/services/loader.service';
 
+
 @Component({
   selector: "app-chat-area",
   templateUrl: "./chat-area.component.html",
@@ -25,7 +26,6 @@ export class ChatAreaComponent implements OnInit {
 
       //Setting the clicked user data to currentUser
       this.currentUser = data;
-
       /**
        * Joining the same room as clicked friend does
        */
@@ -40,6 +40,7 @@ export class ChatAreaComponent implements OnInit {
           // console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
           // console.log(data);
           this.messages = data.message;
+          this.loader.hide();
         });
     });
 
@@ -63,6 +64,7 @@ export class ChatAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loader.show();
     this.message = "";
     this.user = JSON.parse(localStorage.getItem("user"));
   }
@@ -125,10 +127,5 @@ export class ChatAreaComponent implements OnInit {
     this.message = text;
     console.log(message)
     this.showEmojiPicker = false;
-  }
-
-
-  buttonshow(){
-    console.log("clicked")
   }
 }
