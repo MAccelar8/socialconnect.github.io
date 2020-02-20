@@ -145,9 +145,20 @@ export class ChatAreaComponent implements OnInit {
     }
   }
 
+  /**
+   * Emit event for user typing
+   */
   userTyping() {
     // console.log("send in component")
     this.chatservice.sendTypingStatus(this.currentUser.uid , this.currentUser.personalRoomID);
+  }
+
+  /**
+   * fileupload buttom is clicked
+   * @param event occured event details
+   */
+  fileUpload(event){
+    console.log(event)
   }
 
   /**
