@@ -13,6 +13,22 @@ export class ChatService {
   private obs = new Subject();
 public obs$ = this.obs.asObservable();
   constructor(private http: HttpClient) {
+
+    // console.log("Inside the constructor of CHAT_SERVICE")
+    // console.log("Inside the connectSocket() of CHAT_SERVICE")
+    // this.socket = io(this.url, {
+    //   query: "uid=" + JSON.parse(localStorage.getItem("user")).uid.toString()
+    // });
+    // console.log("Socket is:");
+    // console.log(this.socket);
+    // io.connect();
+  }
+
+  /**
+   * Connecting socket for the first time after login
+   */
+  connectSocket(){
+    console.log("Inside the connectSocket() of CHAT_SERVICE")
     this.socket = io(this.url, {
       query: "uid=" + JSON.parse(localStorage.getItem("user")).uid.toString()
     });
@@ -31,7 +47,21 @@ public obs$ = this.obs.asObservable();
   acceptFriendRequest(uid: string){
     this.socket.emit("accept-friend-request", { uid });
   }
- 
+  
+  sendTypingStatus(uid , roomId){
+    // console.log("send in service")
+    this.socket.emit("typing", { senderId : uid , roomId : roomId });
+  }
+
+  recieveTypingStatus(){
+    return Observable.create(observer=>{
+      // console.log("recieve at service")
+      this.socket.on('recieve-typing' , message =>{
+        console.log('Typing status Recieved');
+        observer.next(message)
+      })
+    })
+  }
 
   recieveFriendRequests() {
     return Observable.create(observer => {
@@ -86,23 +116,40 @@ public obs$ = this.obs.asObservable();
       });
     });
   }
+
+  getOfflineNotify(){
+    return Observable.create(observer => {
+      this.socket.on("status-change", message => {
+        console.log("status-change");
+        observer.next(message);
+      });
+    });
+  }
   
 /**
  * listening to recieved messages from server
  */
   recieveMessagefromRoom() {
-    var that = this;
-    let messObservable = new Observable<any>(observer => {
+
+    return Observable.create(observer => {
       this.socket.on("message-recieve", message => {
-        // console.log("message observed");
-        // console.log(messge)
+        console.log("message-recieve");
         observer.next(message);
       });
-      return () => {
-        this.socket.disconnect();
-      };
     });
-    return messObservable;
+
+    // var that = this;
+    // let messObservable = new Observable<any>(observer => {
+    //   this.socket.on("message-recieve", message => {
+    //     console.log("message observed");
+    //     console.log(message);
+    //     observer.next(message);
+    //   });
+    //   // return () => {
+    //   //   this.socket.disconnect();
+    //   // };
+    // });
+    // return messObservable;
   }
 
   getAllMessagesfromCurrentRoom(room:string){
@@ -114,13 +161,14 @@ public obs$ = this.obs.asObservable();
    * @param message message to send
    * @param roomId to that Room Id
    */
-  sendMessage(message: String, room:string , displayName:string , time: number , id:string) {
+  sendMessage(message: String, room:string , displayName:string , time: number , id:string , rid:string) {
     var data = {
       message: message,
       room : room,
       displayName : displayName,
       time : time,
-      senderId : id
+      senderId : id,
+      recieverId : rid
     };
     console.log(data)
     this.socket.emit("new-message", data);
@@ -129,6 +177,11 @@ public obs$ = this.obs.asObservable();
   createRoom(roomId) {
     console.log("Going to create room " , roomId)
     this.socket.emit("create", roomId);
+  }
+
+  disconnectFromRoom(){
+    console.log("Disconnecting in chat service");
+    this.socket.disconnect();
   }
 
 

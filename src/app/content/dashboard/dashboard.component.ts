@@ -21,6 +21,10 @@ export class DashboardComponent implements OnInit {
     private chatService: ChatService
   ) {}
   ngOnInit() {
+
+    console.log("DASHBOARD ONINIT")
+    this.chatService.connectSocket();
+
     this.users = [];
     this.username = this.userservice.getUserName();
 
@@ -37,6 +41,11 @@ export class DashboardComponent implements OnInit {
     this.chatService.recieveFriendRequests().subscribe((data: any) => {
       this.userservice.getNumberOfUsersWithFriendRequest();
     });
+  }
+
+  signOut(){
+    this.chatService.disconnectFromRoom();
+    this.authservice.SignOut();
   }
 
 

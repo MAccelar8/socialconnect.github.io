@@ -12,9 +12,9 @@ import { FriendsDisplayComponent } from './friends-display/friends-display.compo
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent, 
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] ,
   children: [
-    {path: '', redirectTo: 'chat' , pathMatch: 'full' },
+    {path: '', redirectTo: 'friends' , pathMatch: 'full' },
     {path: 'chat', component: ChatComponent},
     {path: 'friends', component: FriendsDisplayComponent},
     {path: 'people', component: FriendsComponent},

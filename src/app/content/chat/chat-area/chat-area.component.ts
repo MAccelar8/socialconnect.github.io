@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
-import { LoaderService } from 'src/app/services/loader.service';
-import { UserService } from 'src/app/services/user.service';
-
+import { LoaderService } from "src/app/services/loader.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-chat-area",
@@ -16,8 +15,51 @@ export class ChatAreaComponent implements OnInit {
   message: string; //used for retrieving message from text-area
   messages = []; // used to store messages from DB and display
   showEmojiPicker = false; //for Toggling of EmojiPicker
-  onlineStatus : 0; //checks online status of the currentUser
-  constructor(private chatservice: ChatService , private loader : LoaderService , private userservice : UserService) {
+  onlineStatus: any; //checks online status of the currentUser
+  typingStatus: any;
+  constructor(
+    private chatservice: ChatService,
+    private loader: LoaderService,
+    private userservice: UserService
+  ) {}
+
+  //scrolling down when component is initialized and after DOM is rendered
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
+  // Scrolling down when new message is sent or recieved
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  ngOnInit() {
+    this.typingStatus = 0;
+    this.loader.show();
+    this.message = "";
+    this.user = JSON.parse(localStorage.getItem("user"));
+
+    this.chatservice.recieveMessagefromRoom().subscribe((data: any) => {
+      console.log("RECIEVEMESSAGEFROMROOM :");
+      console.log(data);
+
+      //updating messages array
+      this.messages.push(data);
+    });
+
+    this.chatservice.getOfflineNotify().subscribe(data => {
+      console.log("GETOFFLINE NOTIFY IN CHAT_AREA");
+      console.log(data);
+      if (data.uid == this.currentUser.uid) {
+        console.log("This is the correct user");
+        if (data.status) {
+          this.onlineStatus = 1;
+        } else {
+          this.onlineStatus = 0;
+        }
+      }
+    });
+
     /**
      * listens to change in selected user in friends-chat-list component
      * sets current user to that user
@@ -33,11 +75,12 @@ export class ChatAreaComponent implements OnInit {
        */
       this.chatservice.createRoom(data.personalRoomID);
 
-
-      this.userservice.checkUserOnlineStatus(data.uid).subscribe((data:any)=>{
-        this.onlineStatus = data.status;
-        console.log(data)
-      })
+      this.userservice
+        .checkUserOnlineStatus(data.uid)
+        .subscribe((data: any) => {
+          this.onlineStatus = data.status;
+          console.log(data);
+        });
 
       /**
        * getting all messages from the database whenever there is change in the currentUser
@@ -52,43 +95,27 @@ export class ChatAreaComponent implements OnInit {
         });
     });
 
-    this.chatservice.recieveMessagefromRoom().subscribe((data: any) => {
-      // console.log("RECIEVEMESSAGEFROMROOM :");
-      // console.log(data);
-
-      //updating messages array
-      this.messages.push(data);
+    this.chatservice.recieveTypingStatus().subscribe((data: any) => {
+      // console.log("recieve at component");
+      // console.log(data)
+      if (data.status) {
+        this.typingStatus = 1;
+        setTimeout(() => {
+          this.typingStatus = 0;
+        }, 5000);
+      }
     });
-  }
-
-  //scrolling down when component is initialized and after DOM is rendered
-  ngAfterViewInit() {
-    this.scrollToBottom();
-  }
-
-  // Scrolling down when new message is sent or recieved
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  ngOnInit() {
-    this.loader.show();
-    this.message = "";
-    this.user = JSON.parse(localStorage.getItem("user"));
   }
 
   sendMessagetoRoom() {
     // console.log("The Message was: ", this.message);
 
-
     //checking if text-area contains atleast some character other than whitespaces
     var regex = /./;
     if (regex.test(this.message)) {
-
       // Removing the last /n used to submit from the message
       var messagewithoutlastenter = this.message.replace(/\n$/, "");
       if (messagewithoutlastenter != "") {
-
         /**
          * sending message to chatservice to back-end with current date
          */
@@ -97,7 +124,8 @@ export class ChatAreaComponent implements OnInit {
           this.currentUser.personalRoomID,
           this.user.displayName,
           Date.now(),
-          this.user.uid
+          this.user.uid,
+          this.currentUser.uid
         );
       }
     }
@@ -105,7 +133,6 @@ export class ChatAreaComponent implements OnInit {
     //clearing the text-area after message submit
     this.message = "";
   }
-
 
   //Logic to scroll to bottom
   scrollToBottom(): void {
@@ -118,22 +145,27 @@ export class ChatAreaComponent implements OnInit {
     }
   }
 
+  userTyping() {
+    // console.log("send in component")
+    this.chatservice.sendTypingStatus(this.currentUser.uid , this.currentUser.personalRoomID);
+  }
+
   /**
    * toggle Emoji picker
    */
-  toggleEmojiPicker(){
+  toggleEmojiPicker() {
     console.log("Toggle selected");
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
   addEmoji(event) {
-    console.log(event)
+    console.log(event);
     const { message } = this;
-    console.log(message)
+    console.log(message);
     const text = `${message}${event.emoji.native}`;
 
     this.message = text;
-    console.log(message)
+    console.log(message);
     this.showEmojiPicker = false;
   }
 }

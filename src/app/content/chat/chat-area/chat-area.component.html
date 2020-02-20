@@ -30,8 +30,10 @@
   </div>
   <div class="col-sm-8 col-xs-7 heading-name">
     <a class="heading-name-meta">{{currentUser.displayName}} </a>
-    <span *ngIf="onlineStatus" class="heading-online">Online</span>
-    <span *ngIf="!onlineStatus" class="heading-offline">Offline</span>
+    <span *ngIf="typingStatus" class="heading-online">Typing .......</span>
+    <span *ngIf="onlineStatus && !typingStatus" class="heading-online">Online</span>
+    <span *ngIf="!onlineStatus && !typingStatus" class="heading-offline">Offline</span>
+
   </div>
   <div class="col-sm-1 col-xs-1  heading-dot float-right">
   
@@ -88,6 +90,8 @@
       id="comment"
       [(ngModel)]="message"
       (keyup.enter)="sendMessagetoRoom()"
+      (keyup)="userTyping()"
+     
     ></textarea>
   </div>
   <div class="col-sm-1 col-xs-1 reply-recording">
