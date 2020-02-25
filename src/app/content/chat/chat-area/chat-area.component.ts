@@ -57,7 +57,19 @@ export class ChatAreaComponent implements OnInit {
         } else {
           this.onlineStatus = 0;
         }
+
+        this.chatservice
+        .getAllMessagesfromCurrentRoom(this.currentUser.personalRoomID)
+        .subscribe((data: any) => {
+          console.log("FROM getOFFLINENOTIFY METHOD GETALLMESSAGES FROM ROOM METHOD");
+          // console.log(data);
+          this.messages = data.message;
+          // this.loader.hide();
+        });
       }
+
+  
+
     });
 
     /**
@@ -88,8 +100,8 @@ export class ChatAreaComponent implements OnInit {
       this.chatservice
         .getAllMessagesfromCurrentRoom(data.personalRoomID)
         .subscribe((data: any) => {
-          // console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
-          // console.log(data);
+          console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
+          console.log(data);
           this.messages = data.message;
           this.loader.hide();
         });
@@ -112,6 +124,14 @@ export class ChatAreaComponent implements OnInit {
 
     //checking if text-area contains atleast some character other than whitespaces
     var regex = /./;
+    var status = 0;
+    console.log("===============")
+    if(this.onlineStatus){
+      status = 1;
+    }
+
+    console.log(this.onlineStatus);
+    console.log(status);
     if (regex.test(this.message)) {
       // Removing the last /n used to submit from the message
       var messagewithoutlastenter = this.message.replace(/\n$/, "");
@@ -125,7 +145,8 @@ export class ChatAreaComponent implements OnInit {
           this.user.displayName,
           Date.now(),
           this.user.uid,
-          this.currentUser.uid
+          this.currentUser.uid,
+          status
         );
       }
     }

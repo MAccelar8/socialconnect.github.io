@@ -57,10 +57,12 @@
             <!-- {{item.message}} -->
             <div class="inner-message-wrap" [innerHTML]="item.message | replaceEmojis:'emojione'"></div>
           </div>
-          <div class="time-font">{{item.time | date:'shortTime'}}</div>
+          <div *ngIf="item.displayName == user.displayName" [className]="item.displayName == user.displayName ? 'time-font-left' : 'time-font-right'">{{item.time | date:'shortTime'}} + {{item.status}}</div>
+          <div *ngIf="item.displayName != user.displayName" [className]="item.displayName == user.displayName ? 'time-font-left' : 'time-font-right'">{{item.time | date:'shortTime'}}</div>
         </div>
         
       </div>
+
      
     <!-- <div class="chat-message-wrapper">
       <div class="wrapper chat-sender chat-message-text">

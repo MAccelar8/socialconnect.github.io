@@ -26,7 +26,8 @@ export const apiEndpoints = {
   GetUserInfoById : 'getuserbyid',
   GetAllUser : 'getallusers',
   GetNumberOfUserRequest : 'getnumberofuserrequest',
-  DeleteFriend : 'deletefriends'
+  DeleteFriend : 'deletefriends',
+  GetAllMessages : 'getallmessages'
 
 }
 /*

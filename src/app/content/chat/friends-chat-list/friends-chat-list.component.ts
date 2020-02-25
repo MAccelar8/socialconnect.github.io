@@ -10,6 +10,7 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji'
 })
 export class FriendsChatListComponent implements OnInit {
   friends: any = [];
+  user : any;
   currentSelectedFriend:any;
   constructor( private userService: UserService,
     private chatService: ChatService) { 
@@ -17,6 +18,8 @@ export class FriendsChatListComponent implements OnInit {
     }
 
   ngOnInit() {
+
+    this.user = JSON.parse(localStorage.getItem('user'));
 
     
      /**
@@ -33,6 +36,15 @@ export class FriendsChatListComponent implements OnInit {
         this.friends = [];
       }
     })
+
+
+    this.chatService.recieveMessagefromRoom().subscribe((data:any)=>{
+      if((data.senderId != this.user.uid) && (data.senderId != this.currentSelectedFriend.uid)){
+        console.log("0000000000000000000000");
+        var target = this.friends.find(obj => obj.uid == data.senderId)
+        console.log(target);
+      }
+    });
   }
 
 
@@ -48,7 +60,7 @@ export class FriendsChatListComponent implements OnInit {
     // console.log("Each Friend Object in ForLOOP")
     // console.log(friend)
     var temp = roomData.findIndex( d => d.uid == friend.uid);
-    Object.assign(friend , {personalRoomID : roomData[temp].personalRoomID , timestamp : roomData[temp].timestamp});
+    Object.assign(friend , {personalRoomID : roomData[temp].personalRoomID , timestamp : roomData[temp].timestamp , pendingMessage : 0});
     // console.log("FRIEND AFTER")
     // console.log(friend)
     TempFriends.push(friend)

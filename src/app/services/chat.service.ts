@@ -2,12 +2,14 @@ import { Injectable } from "@angular/core";
 import * as io from "socket.io-client";
 import { Observable, Subject } from "rxjs";
 import { HttpClient } from '@angular/common/http';
+import { environment, apiEndpoints } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class ChatService {
   private url = "http://localhost:3000";
+  private serverURL = environment.baseURL;
   private socket;
 
   private obs = new Subject();
@@ -153,7 +155,7 @@ public obs$ = this.obs.asObservable();
   }
 
   getAllMessagesfromCurrentRoom(room:string){
-   return this.http.post('http://localhost:3000/api/getallmessages' ,{room} )
+   return this.http.post( this.serverURL + apiEndpoints.GetAllMessages ,{room} )
   }
 
   /**
@@ -161,14 +163,17 @@ public obs$ = this.obs.asObservable();
    * @param message message to send
    * @param roomId to that Room Id
    */
-  sendMessage(message: String, room:string , displayName:string , time: number , id:string , rid:string) {
+  sendMessage(message: String, room:string , displayName:string , time: number , id:string , rid:string , status:number) {
+    console.log("Inside send Message!!!")
+    console.log(status);
     var data = {
       message: message,
       room : room,
       displayName : displayName,
       time : time,
       senderId : id,
-      recieverId : rid
+      recieverId : rid,
+      status : status,
     };
     console.log(data)
     this.socket.emit("new-message", data);
