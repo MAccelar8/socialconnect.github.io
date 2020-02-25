@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji'
+import { database } from 'firebase';
 
 @Component({
   selector: 'app-friends-chat-list',
@@ -27,7 +28,12 @@ export class FriendsChatListComponent implements OnInit {
      */
     this.userService.getAllFriends().subscribe((data:any)=>{
       if(data.status){
-        this.friends = this.addDetailsToEachUser(data.message , data.roomData);
+        console.log("=============================");
+        console.log(data)
+        this.friends = data.message;
+        console.log(this.friends)
+        this.addFriendsToRoom(this.friends);
+        // console.log("INSIDE GET ALL FRIENDS")
         this.onFriendClick(this.friends[0]);
         this.currentSelectedFriend = this.friends[0];
 
@@ -39,34 +45,30 @@ export class FriendsChatListComponent implements OnInit {
 
 
     this.chatService.recieveMessagefromRoom().subscribe((data:any)=>{
-      if((data.senderId != this.user.uid) && (data.senderId != this.currentSelectedFriend.uid)){
-        console.log("0000000000000000000000");
-        var target = this.friends.find(obj => obj.uid == data.senderId)
-        console.log(target);
+      console.log("0000000000000000000000");
+      console.log(data);
+      console.log(this.friends);
+      console.log(this.user);
+      if(data.senderId != this.user.uid){
+        var index = this.friends.findIndex(d => d.uid == data.senderId);
+        console.log('index found is ' , index);
+       let newCount = this.friends[index].unreadMessagesCount + 1;
+       this.friends[index].unreadMessagesCount = newCount;
       }
+      // if((data.senderId != this.user.uid) && (data.senderId != this.currentSelectedFriend.uid)){
+      
+      //   var target = this.friends.find(obj => obj.uid == data.senderId)
+      //   console.log(target);
+      // }
     });
   }
 
 
-  /**
-  * map every user in Users with uid of RoomData and make a single array of friends
-  * Adding other details like personalRoomID and timestamp
-  * @param users It is an array of Users with all details
-  * @param roomData It is array of Objects which incude properties like personalRoomID,timestamp,uid for every user
-  */
- addDetailsToEachUser(users , roomData){
-  var TempFriends = []
-  users.forEach(friend => {
-    // console.log("Each Friend Object in ForLOOP")
-    // console.log(friend)
-    var temp = roomData.findIndex( d => d.uid == friend.uid);
-    Object.assign(friend , {personalRoomID : roomData[temp].personalRoomID , timestamp : roomData[temp].timestamp , pendingMessage : 0});
-    // console.log("FRIEND AFTER")
-    // console.log(friend)
-    TempFriends.push(friend)
+  
+ addFriendsToRoom(friends){
+  friends.forEach(friend => {
+    this.chatService.createRoom(friend.personalRoomID);
   });
-
-  return TempFriends
 }
 
 onFriendClick(data){

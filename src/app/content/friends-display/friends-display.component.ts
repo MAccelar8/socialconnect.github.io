@@ -21,7 +21,8 @@ export class FriendsDisplayComponent implements OnInit {
      */
     this.userServeice.getAllFriends().subscribe((data:any)=>{
       if(data.status){
-        this.friends = this.addDetailsToEachUser(data.message , data.roomData)
+        this.friends = data.message;
+        // this.addDetailsToEachUser(data.message , data.roomData)
       }else{
         console.log("No friends Found")
         this.friends = [];

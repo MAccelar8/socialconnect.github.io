@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseURL: 'http://localhost:3000/api/',
+  socketUrl : 'http://192.168.0.110:3000',
+  baseURL: 'http://192.168.0.110:3000/api/',
   firebase: {
     apiKey: "AIzaSyDMW-J0DWvexpv5WSLJUK5fN9UoX6rDFFg",
     authDomain: "social-connect-5e34a.firebaseapp.com",

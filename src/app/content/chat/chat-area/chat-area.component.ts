@@ -42,9 +42,10 @@ export class ChatAreaComponent implements OnInit {
     this.chatservice.recieveMessagefromRoom().subscribe((data: any) => {
       console.log("RECIEVEMESSAGEFROMROOM :");
       console.log(data);
-
-      //updating messages array
-      this.messages.push(data);
+      if (data.room == this.currentUser.personalRoomID) {
+        //updating messages array
+        this.messages.push(data);
+      }
     });
 
     this.chatservice.getOfflineNotify().subscribe(data => {
@@ -59,17 +60,16 @@ export class ChatAreaComponent implements OnInit {
         }
 
         this.chatservice
-        .getAllMessagesfromCurrentRoom(this.currentUser.personalRoomID)
-        .subscribe((data: any) => {
-          console.log("FROM getOFFLINENOTIFY METHOD GETALLMESSAGES FROM ROOM METHOD");
-          // console.log(data);
-          this.messages = data.message;
-          // this.loader.hide();
-        });
+          .getAllMessagesfromCurrentRoom(this.currentUser.personalRoomID)
+          .subscribe((data: any) => {
+            console.log(
+              "FROM getOFFLINENOTIFY METHOD GETALLMESSAGES FROM ROOM METHOD"
+            );
+            // console.log(data);
+            this.messages = data.message;
+            // this.loader.hide();
+          });
       }
-
-  
-
     });
 
     /**
@@ -85,7 +85,7 @@ export class ChatAreaComponent implements OnInit {
       /**
        * Joining the same room as clicked friend does
        */
-      this.chatservice.createRoom(data.personalRoomID);
+      // this.chatservice.createRoom(data.personalRoomID);
 
       this.userservice
         .checkUserOnlineStatus(data.uid)
@@ -125,8 +125,8 @@ export class ChatAreaComponent implements OnInit {
     //checking if text-area contains atleast some character other than whitespaces
     var regex = /./;
     var status = 0;
-    console.log("===============")
-    if(this.onlineStatus){
+    console.log("===============");
+    if (this.onlineStatus) {
       status = 1;
     }
 
@@ -171,15 +171,18 @@ export class ChatAreaComponent implements OnInit {
    */
   userTyping() {
     // console.log("send in component")
-    this.chatservice.sendTypingStatus(this.currentUser.uid , this.currentUser.personalRoomID);
+    this.chatservice.sendTypingStatus(
+      this.currentUser.uid,
+      this.currentUser.personalRoomID
+    );
   }
 
   /**
    * fileupload buttom is clicked
    * @param event occured event details
    */
-  fileUpload(event){
-    console.log(event)
+  fileUpload(event) {
+    console.log(event);
   }
 
   /**

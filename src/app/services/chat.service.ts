@@ -8,7 +8,7 @@ import { environment, apiEndpoints } from 'src/environments/environment';
   providedIn: "root"
 })
 export class ChatService {
-  private url = "http://localhost:3000";
+  private socketurl = environment.socketUrl;
   private serverURL = environment.baseURL;
   private socket;
 
@@ -31,7 +31,7 @@ public obs$ = this.obs.asObservable();
    */
   connectSocket(){
     console.log("Inside the connectSocket() of CHAT_SERVICE")
-    this.socket = io(this.url, {
+    this.socket = io(this.socketurl, {
       query: "uid=" + JSON.parse(localStorage.getItem("user")).uid.toString()
     });
     console.log("Socket is:");

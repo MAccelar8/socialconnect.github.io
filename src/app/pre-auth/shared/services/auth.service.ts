@@ -9,12 +9,13 @@ import {
 import { Router } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-
+import { environment, apiEndpoints } from 'src/environments/environment';
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  baseurl = environment.baseURL;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -57,7 +58,7 @@ export class AuthService {
           var request = {
             message: "Request for token validation"
           }
-            that.http.post("http://localhost:3000/api", request).subscribe( (res: any) => {
+            that.http.post(this.baseurl, request).subscribe( (res: any) => {
               // console.log("Heyyyy Token Sent");
               // console.log("Response recieved is : ");
               // console.log(res.uid);

@@ -81,6 +81,14 @@ span {
   box-sizing: border-box;
 }
 
+.badge{
+  color: white;
+  display: inline;
+  background-color: #6b3c8c;
+  padding: 5px;
+  margin-left: 5px;
+}
+
 body {
   background: url("http://shurl.esy.es/y") no-repeat fixed center;
   background-size: cover;
