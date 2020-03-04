@@ -3,6 +3,18 @@ import { ChatService } from "src/app/services/chat.service";
 import { LoaderService } from "src/app/services/loader.service";
 import { UserService } from "src/app/services/user.service";
 
+const SERVERS: any = {
+  iceServers: [
+    { urls: "stun:stun.services.mozilla.com" },
+    { urls: "stun:stun.l.google.com:19302" }
+  ]
+};
+
+const DEFAULT_CONSTRAINTS = {
+  optional: []
+};
+
+declare let RTCPeerConnection: any;
 @Component({
   selector: "app-chat-area",
   templateUrl: "./chat-area.component.html",
@@ -10,6 +22,8 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ChatAreaComponent implements OnInit {
   @ViewChild("chatSpace", { static: true }) myScrollContainer: any;
+  @ViewChild("videoElement", { static: true }) videoElement: any;
+  video: any;
   user: any; // currently logged in user
   currentUser: any; //chat area of this user
   message: string; //used for retrieving message from text-area
@@ -17,6 +31,8 @@ export class ChatAreaComponent implements OnInit {
   showEmojiPicker = false; //for Toggling of EmojiPicker
   onlineStatus: any; //checks online status of the currentUser
   typingStatus: any;
+  pc: any;
+
   constructor(
     private chatservice: ChatService,
     private loader: LoaderService,
@@ -34,6 +50,8 @@ export class ChatAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.video = this.videoElement.nativeElement;
+    // this.setupWebRtc();
     this.typingStatus = 0;
     this.loader.show();
     this.message = "";
@@ -45,7 +63,20 @@ export class ChatAreaComponent implements OnInit {
       if (data.room == this.currentUser.personalRoomID) {
         //updating messages array
         this.messages.push(data);
+        if (data.recieverId == this.user.uid) {
+          this.chatservice.sendReadNotify(data);
+        }
       }
+    });
+
+    this.chatservice.getReadMessageNotify().subscribe((data: any) => {
+      console.log("GET__MESSAGE_ACK");
+      console.log(data);
+      var index = this.messages.findIndex(d => d.time == data.time);
+      console.log("Found messages is");
+      console.log(this.messages[index]);
+      this.messages[index].status = 2;
+      console.log(this.messages[index]);
     });
 
     this.chatservice.getOfflineNotify().subscribe(data => {
@@ -82,10 +113,6 @@ export class ChatAreaComponent implements OnInit {
 
       //Setting the clicked user data to currentUser
       this.currentUser = data;
-      /**
-       * Joining the same room as clicked friend does
-       */
-      // this.chatservice.createRoom(data.personalRoomID);
 
       this.userservice
         .checkUserOnlineStatus(data.uid)
@@ -93,6 +120,8 @@ export class ChatAreaComponent implements OnInit {
           this.onlineStatus = data.status;
           console.log(data);
         });
+
+      this.chatservice.sendAllRead(data.uid, data.personalRoomID);
 
       /**
        * getting all messages from the database whenever there is change in the currentUser
@@ -117,6 +146,48 @@ export class ChatAreaComponent implements OnInit {
         }, 5000);
       }
     });
+
+    this.chatservice.getReadMessageAllNotify().subscribe((data: any) => {
+      console.log("55555555555555555555555555555555");
+      console.log(data);
+
+      if (this.currentUser.personalRoomID == data.room) {
+        /**
+         * getting all messages from the database whenever there is change in the currentUser
+         */
+        this.chatservice
+          .getAllMessagesfromCurrentRoom(data.room)
+          .subscribe((data: any) => {
+            console.log("FROM CHAT SERVICE GETALLMESSAGES FROM ROOM METHOD");
+            console.log(data);
+            this.messages = data.message;
+            this.loader.hide();
+          });
+      }
+    });
+
+    this.chatservice.recieveVideoCallRequest().subscribe((message:any)=>{
+      console.log("VIDEO CALL REQUEST RECIEVED WITH MESSAGE_______________");
+      console.log(message);
+      if(message.offer){
+        const peerConnection = new RTCPeerConnection(SERVERS, DEFAULT_CONSTRAINTS);
+        peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+        peerConnection.createAnswer().then((answer)=>{
+          console.log("ANSWER IS _____________________")
+          console.log(answer);
+
+          this.chatservice.sendvideocallanswer(answer , this.currentUser.uid);
+
+          peerConnection.addEventListener('icecandidate', event => {
+            if (event.candidate) {
+               console.log("EVENT CANDIDATE FOUND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            }
+        });
+        })
+      }
+    });
+
+  
   }
 
   sendMessagetoRoom() {
@@ -202,5 +273,59 @@ export class ChatAreaComponent implements OnInit {
     this.message = text;
     console.log(message);
     this.showEmojiPicker = false;
+  }
+
+  sound() {
+    console.log("clicked Sound");
+    this.initCamera({ video: true, audio: true });
+    this.setupWebRtc();
+  }
+
+  async setupWebRtc()  {
+    console.log("SETTING UP WEBRTC")
+    this.pc = new RTCPeerConnection(SERVERS, DEFAULT_CONSTRAINTS);
+    console.log(this.pc)
+    const offer = await this.pc.createOffer();
+    console.log("GETTING OFFER")
+    console.log(offer);
+    this.pc.setLocalDescription(offer);
+    this.pc.addEventListener('icecandidate', event => {
+      if (event.candidate) {
+         console.log("EVENT CANDIDATE FOUND2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+      }
+  });
+    this.chatservice.recieveVideoCallAnswer().subscribe(async (message:any)=>{
+      console.log("ANSWER IS RECIEVEF");
+      console.log(message);
+      const remoteDesc = new RTCSessionDescription(message.answer);
+      await this.pc.setRemoteDescription(remoteDesc);
+    })
+    this.initCamera({ video: true, audio: true });
+
+    this.chatservice.sendvideocall(offer , this.currentUser.uid)
+    
+  }
+
+  initCamera(config: any) {
+    var browser = <any>navigator;
+
+    browser.getUserMedia =
+      browser.getUserMedia ||
+      browser.webkitGetUserMedia ||
+      browser.mozGetUserMedia ||
+      browser.msGetUserMedia;
+
+    console.log(browser);
+
+    browser.mediaDevices.getUserMedia(config).then(stream => {
+      console.log(stream);
+      const mediaStream = new MediaStream(stream);
+      console.log(this.video.srcObject);
+      // this.video.src = mediaStream;
+      // const video1 = document.getElementById('videoElement');
+      // video1.sr
+      this.video.srcObject = stream;
+      this.video.play();
+    });
   }
 }

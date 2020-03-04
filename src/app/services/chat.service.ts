@@ -38,6 +38,13 @@ public obs$ = this.obs.asObservable();
     console.log(this.socket);
   }
 
+  sendvideocall(offer , toid){
+    this.socket.emit("send-video-call-request" , {offer:offer, touid : toid})
+  }
+  sendvideocallanswer(offer , toid){
+    this.socket.emit("send-video-call-answer" , {offer:offer, touid : toid})
+  }
+
   sendFriendRequest(uid: string) {
     this.socket.emit("send-friend-request", { uid });
   }
@@ -54,7 +61,25 @@ public obs$ = this.obs.asObservable();
     // console.log("send in service")
     this.socket.emit("typing", { senderId : uid , roomId : roomId });
   }
+  recieveVideoCallRequest(){
+    return Observable.create(observer=>{
+      // console.log("recieve at service")
+      this.socket.on('recieve-video-call-request' , message =>{
+        console.log('recieve-video-call-request');
+        observer.next(message)
+      })
+    })
+  }
 
+  recieveVideoCallAnswer(){
+    return Observable.create(observer=>{
+      // console.log("recieve at service")
+      this.socket.on('recieve-video-call-answer' , message =>{
+        console.log('recieve-video-call-answer');
+        observer.next(message)
+      })
+    })
+  }
   recieveTypingStatus(){
     return Observable.create(observer=>{
       // console.log("recieve at service")
@@ -123,6 +148,23 @@ public obs$ = this.obs.asObservable();
     return Observable.create(observer => {
       this.socket.on("status-change", message => {
         console.log("status-change");
+        observer.next(message);
+      });
+    });
+  }
+
+  getReadMessageNotify(){
+    return Observable.create(observer => {
+      this.socket.on("message-read-ack", message => {
+        console.log("message-read-ack");
+        observer.next(message);
+      });
+    });
+  }
+  getReadMessageAllNotify(){
+    return Observable.create(observer => {
+      this.socket.on("message-read-all-ack", message => {
+        console.log("message-read-all-ack");
         observer.next(message);
       });
     });
@@ -198,5 +240,16 @@ public obs$ = this.obs.asObservable();
     // console.log(data);
     console.log("inside service")
     this.obs.next(data);
+  }
+
+
+  sendReadNotify(data:any){
+    this.socket.emit("message-read", data);
+  }
+
+  sendAllRead(uid , roomId){
+    console.log("SEND ALL REASD")
+    console.log(uid , "  ----  " , roomId);
+    this.socket.emit("message-read-all" , { id : uid , roomId : roomId })
   }
 }

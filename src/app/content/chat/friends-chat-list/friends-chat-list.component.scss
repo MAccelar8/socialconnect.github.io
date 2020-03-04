@@ -85,8 +85,14 @@ span {
   color: white;
   display: inline;
   background-color: #6b3c8c;
-  padding: 5px;
+  padding: 3px;
   margin-left: 5px;
+}
+
+span.latest-message {
+  font-size: 0.75rem;
+  margin-left: 4px;
+  color: rgba(0,0,0,0.6);
 }
 
 body {
@@ -208,7 +214,7 @@ body {
 
 .heading-dot {
   padding: 0;
-  margin-left: 10px;
+  // margin-left: 10px;
 }
 
 .heading-dot i {
@@ -288,7 +294,8 @@ body {
 }
 
 .sideBar-name {
-  padding: 10px !important;
+  // padding: 10px !important;
+  height: fit-content;
 }
 
 .name-meta {

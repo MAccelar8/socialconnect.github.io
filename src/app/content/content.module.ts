@@ -15,6 +15,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ReplaceEmojisPipe } from '../pipes/replace-emojis.pipe';
 import { LoaderComponent } from '../loader/loader.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
   ],
   imports: [
     CommonModule,
+    MatIconModule,
     ContentRoutingModule,
     FormsModule,
     ReactiveFormsModule,

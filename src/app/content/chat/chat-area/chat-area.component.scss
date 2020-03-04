@@ -13,6 +13,30 @@ input[type="file"] {
 #conversation{
   width: inherit;
 }
+.icon-status-0{
+  height: fit-content;
+  width: fit-content;
+  font-size: 13px;
+  margin-left: 12px;
+  font-weight: bold;
+  color: white;
+}
+.icon-status-1{
+  height: fit-content;
+  width: fit-content;
+  font-size: 13px;
+  margin-left: 12px;
+  font-weight: bold;
+  color: white;
+}
+.icon-status-2{
+  height: fit-content;
+  width: fit-content;
+  font-size: 13px;
+  color: #6b3c8c;
+  font-weight: bold;
+  margin-left: 12px;
+}
 .wrap-for-max { 
   white-space: pre-wrap;      /* CSS3 */   
   white-space: -moz-pre-wrap; /* Firefox */    

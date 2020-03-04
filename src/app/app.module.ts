@@ -21,6 +21,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ReplaceEmojisPipe } from './pipes/replace-emojis.pipe';
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderService } from './services/loader.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, NotAuthorizedComponent, LoaderComponent],
@@ -36,7 +37,8 @@ import { LoaderService } from './services/loader.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    PickerModule
+    PickerModule,
+    MatIconModule
   ],
   providers: [AuthService,UserService,ChatService ,
     {

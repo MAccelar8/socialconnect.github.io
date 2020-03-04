@@ -22,22 +22,29 @@
 <div class="row heading" *ngIf="currentUser">
   <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
     <div class="heading-avatar-icon">
-      <img *ngIf="currentUser.profilePicURL" src={{currentUser.profilePicURL}} />
-      <img *ngIf="!currentUser.profilePicURL" src={{currentUser.photoURL}} />
-      
-      
+      <img
+        *ngIf="currentUser.profilePicURL"
+        src="{{ currentUser.profilePicURL }}"
+      />
+      <img
+        *ngIf="!currentUser.profilePicURL"
+        src="{{ currentUser.photoURL }}"
+      />
     </div>
   </div>
   <div class="col-sm-8 col-xs-7 heading-name">
-    <a class="heading-name-meta">{{currentUser.displayName}} </a>
+    <a class="heading-name-meta">{{ currentUser.displayName }} </a>
     <span *ngIf="typingStatus" class="heading-online">Typing .......</span>
-    <span *ngIf="onlineStatus && !typingStatus" class="heading-online">Online</span>
-    <span *ngIf="!onlineStatus && !typingStatus" class="heading-offline">Offline</span>
-
+    <span *ngIf="onlineStatus && !typingStatus" class="heading-online"
+      >Online</span
+    >
+    <span *ngIf="!onlineStatus && !typingStatus" class="heading-offline"
+      >Offline</span
+    >
   </div>
-  <div class="col-sm-1 col-xs-1  heading-dot float-right">
-  
-    <i class="fa fa-ellipsis-v fa-2x  float-right" aria-hidden="true"></i>
+  <div class="col-sm-2 col-xs-2  heading-dot float-right">
+    <i class="fa fa-ellipsis-v fa-2x  float-right"   aria-hidden="true"></i>
+    <!-- <i class="fa fa-ellipsis-v fa-2x  float-right" (click)="sound()"  aria-hidden="true"></i> -->
   </div>
 </div>
 
@@ -52,18 +59,59 @@
 
   <section #chatSpace style="width: 100%;" id="chatarea">
     <div class="chat-message-wrapper" *ngFor="let item of messages">
-        <div [className]="item.displayName == user.displayName ? 'chat-sender wrapper .wrap-for-max chat-message-text' : 'chat-reciever wrapper .wrap-for-max chat-message-text'" >
-          <div class="message-text-br">
-            <!-- {{item.message}} -->
-            <div class="inner-message-wrap" [innerHTML]="item.message | replaceEmojis:'emojione'"></div>
-          </div>
-          <div *ngIf="item.displayName == user.displayName" [className]="item.displayName == user.displayName ? 'time-font-left' : 'time-font-right'">{{item.time | date:'shortTime'}} + {{item.status}}</div>
-          <div *ngIf="item.displayName != user.displayName" [className]="item.displayName == user.displayName ? 'time-font-left' : 'time-font-right'">{{item.time | date:'shortTime'}}</div>
+      <div
+        [className]="
+          item.displayName == user.displayName
+            ? 'chat-sender wrapper .wrap-for-max chat-message-text'
+            : 'chat-reciever wrapper .wrap-for-max chat-message-text'
+        "
+      >
+        <div class="message-text-br">
+          <!-- {{item.message}} -->
+          <div
+            class="inner-message-wrap"
+            [innerHTML]="item.message | replaceEmojis: 'emojione'"
+          ></div>
         </div>
-        
+        <div
+          *ngIf="item.displayName == user.displayName"
+          [className]="
+            item.displayName == user.displayName
+              ? 'time-font-left'
+              : 'time-font-right'
+          "
+        >
+          {{ item.time | date: "shortTime"
+          }}<mat-icon *ngIf="item.status == 0" class="icon-status-0"
+            >done</mat-icon
+          ><mat-icon *ngIf="item.status == 1" class="icon-status-1"
+            >done_all</mat-icon
+          ><mat-icon *ngIf="item.status == 2" class="icon-status-2"
+            >done_all</mat-icon
+          >
+        </div>
+        <div
+          *ngIf="item.displayName != user.displayName"
+          [className]="
+            item.displayName == user.displayName
+              ? 'time-font-left'
+              : 'time-font-right'
+          "
+        >
+          {{ item.time | date: "shortTime" }}
+        </div>
       </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="text-center">
+          <h3>
+            <video #videoElement></video>
+          </h3>
+        </div>
+      </div>  
+    </div> -->
 
-     
     <!-- <div class="chat-message-wrapper">
       <div class="wrapper chat-sender chat-message-text">
         Hey There
@@ -76,12 +124,16 @@
         <div class="time-font">6:33 PM</div>
       </div>
     </div> -->
-    
-
   </section>
 </div>
 <div class="row reply">
-  <emoji-mart class="emoji-marti" set="emojione" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick your emoji…"></emoji-mart>
+  <emoji-mart
+    class="emoji-marti"
+    set="emojione"
+    (emojiSelect)="addEmoji($event)"
+    *ngIf="showEmojiPicker"
+    title="Pick your emoji…"
+  ></emoji-mart>
   <div class="col-sm-1 col-xs-1 reply-emojis" (click)="toggleEmojiPicker()">
     <i class="fa fa-smile-o fa-2x"></i>
   </div>
@@ -93,12 +145,13 @@
       [(ngModel)]="message"
       (keyup.enter)="sendMessagetoRoom()"
       (keyup)="userTyping()"
-     
     ></textarea>
   </div>
   <label class="col-sm-1 col-xs-1 reply-recording">
-    <i class="fa fa-microphone fa-2x" aria-hidden="true"><input type="file" name="" id="" (change)="fileUpload($event)"></i>
-  </label >
+    <i class="fa fa-microphone fa-2x" aria-hidden="true"
+      ><input type="file" name="" id="" (change)="fileUpload($event)"
+    /></i>
+  </label>
   <div class="col-sm-1 col-xs-1 reply-send">
     <i
       class="fa fa-send fa-2x"
